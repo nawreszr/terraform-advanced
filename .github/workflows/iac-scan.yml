@@ -1,0 +1,20 @@
+name: IaC security scan (Checkov)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Installer Checkov
+        run: pip install checkov
+      - name: Scanner le code Terraform
+        run: |
+          checkov -d . --framework terraform \
+            --check CKV_AWS_19,CKV_AWS_53,CKV_AWS_54,CKV_AWS_55,CKV_AWS_56,CKV2_AWS_6
